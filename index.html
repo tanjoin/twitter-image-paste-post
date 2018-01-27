@@ -5,16 +5,16 @@
  </head>
  <body>
  <h1>Play with this editor!</h1>
- <input type="text" name="totalcount" size="6" maxlength="4">
- <textarea id="editor" rows="3" cols="80"></textarea>
- <div id="images"></div>
- <input type="text" name="hashtag" size="6" maxlength="4">
+ <input type="text" name="totalcount" size="6" maxlength="4"><br>
+ <textarea id="editor" rows="3" cols="80"></textarea><br>
+ 画像一覧 : <div id="images"></div><br>
+ Hash Tag : <input type="text" name="hashtag" size="6" maxlength="4"><br>
 
  <script>
   function log(txt) {
     document.getElementById("log").appendChild(document.createTextNode(txt + "\n"));
   }
-  function pasteIntercept(evt) {
+  function pasteIntercept(event) {
     log("Pasting!");
     var items = event.originalEvent.clipboardData.items;
     for (var i = 0 ; i < items.length ; i++) {
