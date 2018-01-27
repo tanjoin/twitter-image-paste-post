@@ -16,7 +16,8 @@
   }
   function pasteIntercept(event) {
     log("Pasting!");
-    var items = event.originalEvent.clipboardData.items;
+    var items = event.originalEvent.clipboardData ? event.originalEvent.clipboardData.getData("image") : window.clipboardData.getData("image");
+    console.log(items);
     for (var i = 0 ; i < items.length ; i++) {
       var item = items[i];
       if (item.type.indexOf("image") != -1) {
