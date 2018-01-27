@@ -11,23 +11,47 @@
  Hash Tag : <input type="text" name="hashtag" size="6" maxlength="4"><br>
 
  <script>
-  function log(txt) {
-    document.getElementById("log").appendChild(document.createTextNode(txt + "\n"));
-  }
-  function pasteIntercept(event) {
-    log("Pasting!");
-    var items = event.originalEvent.clipboardData ? event.originalEvent.clipboardData.getData("image") : window.clipboardData.getData("image");
-    console.log(items);
-    for (var i = 0 ; i < items.length ; i++) {
-      var item = items[i];
-      if (item.type.indexOf("image") != -1) {
-        // 画像のみサーバへ送信する
-        var file = item.getAsFile();
-        log(file);
-      }
+  window.addEventListener('paste', function(e) {
+    var items = e.clipboardData.items;
+    if (!items || items) {
+      alert('this browser does not work ClipboardData.items');
+      return;
+    }
+    for (var i = 0; i < items.length; i++) {
+      console.log(items[0]);
+      getData(items[0]);
+    }
+  });
+
+  function getData(item) {
+    if (item.type.indexOf('text') >= 0) {
+      item.getAsString(function(str) {
+        console.log('text data: ', str);
+        alert('text data: ' +  str);
+      });
+    } else if (item.type.indexOf('image') >= 0) {
+      var blob = item.getAsFile();
+      console.log('image data: ', blob);
+      alert('image data: ' + blob);
     }
   }
-  document.getElementById("editor").addEventListener("paste", pasteIntercept, false);
+//   function log(txt) {
+//     document.getElementById("log").appendChild(document.createTextNode(txt + "\n"));
+//   }
+//   function pasteIntercept(event) {
+//     log("Pasting!");
+//     var items = event.originalEvent.clipboardData ? event.originalEvent.clipboardData.getData("image") : window.clipboardData.getData("image");
+//     console.log(items);
+//     for (var i = 0 ; i < items.length ; i++) {
+//       var item = items[i];
+//       if (item.type.indexOf("image") != -1) {
+//         // 画像のみサーバへ送信する
+//         var file = item.getAsFile();
+//         log(file);
+//       }
+//     }
+//   }
+//   document.getElementById("editor").addEventListener("paste", pasteIntercept, false);
   </script>
 
   <h2>Log</h2>
