@@ -4,56 +4,27 @@
   <title>twitter image paste post</title>
  </head>
  <body>
- <h1>Play with this editor!</h1>
- <input type="text" name="totalcount" size="6" maxlength="4"><br>
- <textarea id="editor" rows="3" cols="80"></textarea><br>
- 画像一覧 : <div id="images"></div><br>
- Hash Tag : <input type="text" name="hashtag" size="6" maxlength="4"><br>
-
- <script>
-  window.addEventListener('paste', function(e) {
-    var items = e.clipboardData.items;
-    if (!items || items) {
-      alert('this browser does not work ClipboardData.items');
-      return;
-    }
-    for (var i = 0; i < items.length; i++) {
-      console.log(items[0]);
-      getData(items[0]);
-    }
-  });
-
-  function getData(item) {
-    if (item.type.indexOf('text') >= 0) {
-      item.getAsString(function(str) {
-        console.log('text data: ', str);
-        alert('text data: ' +  str);
-      });
-    } else if (item.type.indexOf('image') >= 0) {
-      var blob = item.getAsFile();
-      console.log('image data: ', blob);
-      alert('image data: ' + blob);
-    }
-  }
-//   function log(txt) {
-//     document.getElementById("log").appendChild(document.createTextNode(txt + "\n"));
-//   }
-//   function pasteIntercept(event) {
-//     log("Pasting!");
-//     var items = event.originalEvent.clipboardData ? event.originalEvent.clipboardData.getData("image") : window.clipboardData.getData("image");
-//     console.log(items);
-//     for (var i = 0 ; i < items.length ; i++) {
-//       var item = items[i];
-//       if (item.type.indexOf("image") != -1) {
-//         // 画像のみサーバへ送信する
-//         var file = item.getAsFile();
-//         log(file);
-//       }
-//     }
-//   }
-//   document.getElementById("editor").addEventListener("paste", pasteIntercept, false);
+  <h1>Play with this editor!</h1>
+  <input type="text" name="totalcount" size="6" maxlength="4"><br>
+  <textarea id="editor" rows="3" cols="80"></textarea><br>
+  画像一覧 : <div id="images"></div><br>
+  Hash Tag : <input type="text" name="hashtag" size="6" maxlength="4"><br>
+  <script>
+   document.onpaste = function(event){
+     var items = (event.clipboardData || event.originalEvent.clipboardData).items;
+     console.log(JSON.stringify(items)); // will give you the mime types
+     for (index in items) {
+       var item = items[index];
+       if (item.kind === 'file') {
+         var blob = item.getAsFile();
+         var reader = new FileReader();
+         reader.onload = function(event){
+           console.log(event.target.result)}; // data url!
+         reader.readAsDataURL(blob);
+       }
+     }
+   }
   </script>
-
   <h2>Log</h2>
   <textarea rows="15" cols="80" id="log" readonly="true"></textarea>
  </body>
